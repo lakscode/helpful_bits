@@ -1,0 +1,38 @@
+wordpress helpful tips
+
+for url rewriting
+
+
+/**********to redirect 404 to home page  */
+if( !function_exists('redirect_404_to_homepage') ){
+
+    add_action( 'template_redirect', 'redirect_404_to_homepage' );
+
+    function redirect_404_to_homepage(){
+       if(is_404()):
+            wp_safe_redirect( home_url('/') );
+            exit;
+        endif;
+    }
+}
+
+
+
+/* to remove particular query string from url */
+function remove_query_strings() {
+if (!is_admin()) {
+add_filter('script_loader_src', 'remove_query_strings_split', 15);
+add_filter('style_loader_src', 'remove_query_strings_split', 15);
+}
+}
+
+function remove_query_strings_split($src){
+$output = preg_split("/(&amp|\?amp|?noamp|&noamp)/", $src);
+return $output[0];
+}
+
+add_action('remove_query_strings', 'remove_query_strings');
+
+
+
+
